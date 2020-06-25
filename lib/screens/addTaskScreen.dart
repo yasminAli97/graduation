@@ -9,6 +9,7 @@ import 'package:projectflutterapp/utility/MyImage.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:projectflutterapp/utility/sql_helper.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:intl/intl.dart';
 
 final dbHelper = SQL_Helper();
 Task task = Task.withDefautCat(1);
@@ -43,8 +44,13 @@ class _AddNewTaskScreen extends State<AddNewTaskScreen> {
   TimeOfDay selectedTime = TimeOfDay.now();
   bool isDetectTime = false;
 
+   MaterialLocalizations localizations;
+   String formattedTimeOfDay;
+
   @override
   Widget build(BuildContext context) {
+    localizations = MaterialLocalizations.of(context);
+
     return SafeArea(
       child: Scaffold(
         appBar: null,
@@ -81,18 +87,6 @@ class _AddNewTaskScreen extends State<AddNewTaskScreen> {
                                     bottomLeft: Radius.circular(0),
                                     topLeft: Radius.circular(0),
                                     topRight: Radius.circular(0)),
-//                              border: Border(
-//                                right: BorderSide(
-//                                  color: Colors.white,
-//                                  width: 1.0,
-//
-//                                ),
-//                                top: BorderSide(
-//                                  color: Colors.white,
-//                                  width: 1.0,
-//                                ),
-//                              ),
-
                                 boxShadow: [
                                   BoxShadow(
                                     color: Color(0xffBBB4C9).withOpacity(.35),
@@ -139,13 +133,6 @@ class _AddNewTaskScreen extends State<AddNewTaskScreen> {
                                 bottomLeft: Radius.circular(50),
                                 topLeft: Radius.circular(0),
                                 topRight: Radius.circular(0)),
-//                              boxShadow: [
-//                                BoxShadow(
-//                                  color: Color(0xffBBB4C9).withOpacity(.35),
-//                                  blurRadius: 15.0,
-//                                  offset: const Offset(0.0, 10.0),
-//                                ),
-//                              ],
                           ),
                           child: GestureDetector(
                             onTap: () {
@@ -165,18 +152,6 @@ class _AddNewTaskScreen extends State<AddNewTaskScreen> {
                                     bottomLeft: Radius.circular(50),
                                     topLeft: Radius.circular(0),
                                     topRight: Radius.circular(0)),
-//                                      border: Border(
-//                                        right: BorderSide(
-//                                          color: Colors.white,
-//                                          width: 1.0,
-//
-//                                        ),
-//                                        top: BorderSide(
-//                                          color: Colors.white,
-//                                          width: 1.0,
-//                                        ),
-//
-//                                      ),
                               ),
                               child: Row(
                                 mainAxisAlignment:
@@ -451,11 +426,18 @@ class _AddNewTaskScreen extends State<AddNewTaskScreen> {
               _selectDate(context);
             },
             child: Container(
-                padding: EdgeInsetsDirectional.only(start: 5, end: 5),
-                decoration: BoxDecoration(
-                    color: Color(0xffDAD0EE),
-                    borderRadius: BorderRadius.circular(10)),
-                child: Text(selectedDate.toIso8601String())),
+              width: 110,
+              padding: EdgeInsetsDirectional.only(
+                  start: 5, end: 5, top: 7, bottom: 7),
+              decoration: BoxDecoration(
+                  color: Color(0xffDAD0EE),
+                  borderRadius: BorderRadius.circular(10)),
+              child: Text(
+                DateFormat('EEE,dd MMMM').format(selectedDate),
+                style: TextStyle(
+                    color: Color(0xff605995), fontWeight: FontWeight.bold),
+              ),
+            ),
           ),
           SizedBox(height: 10),
           GestureDetector(
@@ -463,11 +445,21 @@ class _AddNewTaskScreen extends State<AddNewTaskScreen> {
               _selectTime(context);
             },
             child: Container(
-                padding: EdgeInsetsDirectional.only(start: 5, end: 5),
+              alignment: AlignmentDirectional.center,
+                width: 110,
+                padding: EdgeInsetsDirectional.only(
+                    start: 5, end: 5, top: 7, bottom: 7),
                 decoration: BoxDecoration(
                     color: Color(0xffDAD0EE),
                     borderRadius: BorderRadius.circular(10)),
-                child: Text(selectedTime.toString())),
+                child: Text(
+//                  selectedTime.hour.toString() +
+//                      ":" +
+//                      selectedTime.minute.toString(),
+                  localizations.formatTimeOfDay(selectedTime),
+                  style: TextStyle(
+                      color: Color(0xff605995), fontWeight: FontWeight.bold),
+                )),
           )
         ],
       ),

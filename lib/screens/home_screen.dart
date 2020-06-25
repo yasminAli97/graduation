@@ -1,8 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:projectflutterapp/constants/constants.dart';
+import 'package:projectflutterapp/main.dart';
 import 'package:projectflutterapp/models/Category.dart';
 import 'package:projectflutterapp/models/Task.dart';
+import 'package:projectflutterapp/screens/SecondScreen.dart';
 import 'package:projectflutterapp/screens/addTaskScreen.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:projectflutterapp/screens/categoriesScreen.dart';
@@ -12,9 +14,18 @@ import 'package:projectflutterapp/utility/score_shape.dart';
 import 'package:projectflutterapp/services/auth.dart';
 import 'package:projectflutterapp/screens/first_page.dart';
 import 'package:projectflutterapp/screens/ProfilePage.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
  final FirstPage firstPage = FirstPage();
 
+
+final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+FlutterLocalNotificationsPlugin();
+
+// Streams are created so that app can respond to notification-related events since the plugin is initialised in the `main` function
+
+
+NotificationAppLaunchDetails notificationAppLaunchDetails;
 class HomeScreen extends StatefulWidget {
   HomeScreen({Key key}) : super(key: key);
 
@@ -31,27 +42,91 @@ class _HomeScreen extends State<HomeScreen> {
   //final AuthServices _auth = AuthServices();
 
   @override
+  void initState() {
+    super.initState();
+    _requestIOSPermissions();
+    _configureDidReceiveLocalNotificationSubject();
+    _configureSelectNotificationSubject();
+    print("هيني ");
+  }
+
+  void _requestIOSPermissions() {
+    flutterLocalNotificationsPlugin
+        .resolvePlatformSpecificImplementation<
+        IOSFlutterLocalNotificationsPlugin>()
+        ?.requestPermissions(
+      alert: true,
+      badge: true,
+      sound: true,
+    );
+  }
+  void _configureDidReceiveLocalNotificationSubject() {
+    didReceiveLocalNotificationSubject.stream
+        .listen((ReceivedNotification receivedNotification) async {
+      await showDialog(
+        context: context,
+        builder: (BuildContext context) => CupertinoAlertDialog(
+          title: receivedNotification.title != null
+              ? Text(receivedNotification.title)
+              : null,
+          content: receivedNotification.body != null
+              ? Text(receivedNotification.body)
+              : null,
+          actions: [
+            CupertinoDialogAction(
+              isDefaultAction: true,
+              child: Text('Ok'),
+              onPressed: () async {
+                Navigator.of(context, rootNavigator: true).pop();
+                await Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) =>
+                        SecondScreen(receivedNotification.payload),
+                  ),
+                );
+              },
+            )
+          ],
+        ),
+      );
+    });
+  }
+
+  void _configureSelectNotificationSubject() {
+    selectNotificationSubject.stream.listen((String payload) async {
+      await Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => SecondScreen(payload)),
+      );
+    });
+  }
+
+  @override
+  void dispose() {
+    didReceiveLocalNotificationSubject.close();
+    selectNotificationSubject.close();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.brown[400],
-        elevation: 0.0,
-        actions: <Widget>[
-          FlatButton.icon(
-            icon: Icon(Icons.person),
-            label: Text("logout"),
-             onPressed: firstPage.logoutUser,
-          ),
-        ],
-      ),
-      backgroundColor: Color(0xff9966FF),
-      body: ListView(
-        children: <Widget>[
-          Container(
-            height: MediaQuery
-                .of(context)
-                .size
-                .height,
+    return SafeArea(
+      child: Scaffold(
+//      appBar: AppBar(
+//        backgroundColor: Colors.brown[400],
+//        elevation: 0.0,
+//        actions: <Widget>[
+//          FlatButton.icon(
+//            icon: Icon(Icons.person),
+//            label: Text("logout"),
+//             onPressed: firstPage.logoutUser,
+//          ),
+//        ],
+//      ),
+        backgroundColor: Color(0xff9966FF),
+        body: SingleChildScrollView(
+          child: Container(
             width: MediaQuery
                 .of(context)
                 .size
@@ -63,7 +138,8 @@ class _HomeScreen extends State<HomeScreen> {
                 fit: BoxFit.fill,
               ),
             ),
-            child: Column(children: <Widget>[
+            child: Column(
+                children: <Widget>[
               Container(
                   alignment: AlignmentDirectional.topStart,
                   child: Column(children: <Widget>[
@@ -428,8 +504,8 @@ class _HomeScreen extends State<HomeScreen> {
                         ])
                   ]))
             ]),
-          )
-        ],
+          ),
+        ),
       ),
     );
   }
@@ -461,7 +537,7 @@ class _HomeScreen extends State<HomeScreen> {
                   Navigator.push(context,
                       MaterialPageRoute(
                           builder: (context) {
-                            return Friends();
+                            return MyWidget();
                           }));
                 },
                 child: Container(
