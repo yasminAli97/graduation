@@ -86,7 +86,7 @@ class _FirstPageState extends State<FirstPage> {
 ///------------------------------------------
   controlSignIn(GoogleSignInAccount signInAccount) async{
     if(signInAccount != null){
-      //await saveUserInfoToFirestore();
+      await saveUserInfoToFirestore();
       setState(() {
         isSignedIn = true;
   });
@@ -103,7 +103,7 @@ class _FirstPageState extends State<FirstPage> {
 
     if(!documentSnapshot.exists){
       //final username = await  Navigator.of(context).pushNamed(CREATE_ACCOUNT_PAGE);
-      final username = await  Navigator.push(context ,MaterialPageRoute(builder: (context) => CreateAccountPage()));
+      final username = "null";//await  Navigator.push(context ,MaterialPageRoute(builder: (context) => CreateAccountPage()));
      // Navigator.push(context ,MaterialPageRoute(builder: (context) => CreateAccountPage()));
       //Navigator.of(context).pushNamed(CREATE_ACCOUNT_PAGE);
       usersReference.document(gCurrentUser.id).setData({
@@ -113,7 +113,8 @@ class _FirstPageState extends State<FirstPage> {
         "url":gCurrentUser.photoUrl,
         "email": gCurrentUser.email,
         "timestamp": timestamp,
-        //score
+        "bio": "null",
+        "score": 0 ,
       });
       documentSnapshot = await usersReference.document(gCurrentUser.id).get();
     }
