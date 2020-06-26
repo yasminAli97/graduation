@@ -355,86 +355,9 @@ class _HomeScreen extends State<HomeScreen> {
                           ),
                         ),
                       ),
-
-                      Stack(
-                        children: <Widget>[
-                          if(isMore) showMoreIcons(context),
-                          Container(
-                              width: MediaQuery
-                                  .of(context)
-                                  .size
-                                  .width,
-                              margin: EdgeInsets.only(top: 65),
-                              child: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: <Widget>[
-                                    GestureDetector(
-                                      child: Container(
-                                          width: MediaQuery
-                                              .of(context)
-                                              .size
-                                              .width *
-                                              1.2 /
-                                              6,
-                                          child: SvgPicture.asset(
-                                              "assets/images/setting.svg")),
-                                    ),
-                                    GestureDetector(
-                                      onTap: () {
-                                        Navigator.push(context,
-                                            MaterialPageRoute(
-                                                builder: (context) {
-                                                  return Friends();
-                                                }));
-                                      },
-                                      child: Container(
-                                          width: MediaQuery
-                                              .of(context)
-                                              .size
-                                              .width *
-                                              1.2 /
-                                              5,
-                                          child: SvgPicture.asset(
-                                              "assets/images/ic_friends.svg")),
-                                    ),
-                                    GestureDetector(
-                                      child: Container(
-                                        width:
-                                        MediaQuery
-                                            .of(context)
-                                            .size
-                                            .width *
-                                            1.2 /
-                                            5,
-                                        child: SvgPicture.asset(
-                                            "assets/images/circle_share.svg"),
-                                      ),
-                                    ),
-                                    GestureDetector(
-                                      onTap: () {
-                                        setState(() {
-                                          isMore = !isMore;
-                                        });
-                                      },
-                                      child: Container(
-                                        width:
-                                        MediaQuery
-                                            .of(context)
-                                            .size
-                                            .width *
-                                            1.2 /
-                                            5,
-                                        child: SvgPicture.asset(
-                                            "assets/images/ic_more.svg"),
-                                      ),
-                                    ),
-                                  ]))
-                        ],
-                      )
-
-                      ,
-                      Container(
+                        isMore ? showMoreIcons(context) : Container(),
+                        SizedBox(height: 20),
+                        Container(
                           width: MediaQuery
                               .of(context)
                               .size
