@@ -16,6 +16,8 @@ import 'package:projectflutterapp/screens/first_page.dart';
 import 'package:projectflutterapp/screens/ProfilePage.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
+import 'friends_pages/FriendsPages.dart';
+
  final FirstPage firstPage = FirstPage();
 
 
@@ -455,11 +457,9 @@ class _HomeScreen extends State<HomeScreen> {
                                     ),
                                     GestureDetector(
                                       onTap: () {
-                                        Navigator.push(context,
-                                            MaterialPageRoute(
-                                                builder: (context) {
-                                                  return Friends();
-                                                }));
+                                        Navigator.push(context,MaterialPageRoute(builder: (context) {
+                                          return FriendsPages();
+                                        }));
                                       },
                                       child: Container(
                                           width: MediaQuery
@@ -500,7 +500,13 @@ class _HomeScreen extends State<HomeScreen> {
                                             "assets/images/ic_more.svg"),
                                       ),
                                     ),
-                                  ]))
+                                  ])),
+                          SizedBox(height: 20),
+                          FlatButton.icon(
+                            icon: Icon(Icons.person),
+                            label: Text("logout"),
+                            onPressed: firstPage.logoutUser,
+                          )
                         ])
                   ]))
             ]),
@@ -522,13 +528,13 @@ class _HomeScreen extends State<HomeScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               GestureDetector(
+                /*onTap: () {
+                    Navigator.push(context,MaterialPageRoute(builder: (context) {
+                    return FriendsPages();
+                    }));
+                    },*/
                 child: Container(
-                    width: MediaQuery
-                        .of(context)
-                        .size
-                        .width *
-                        1.2 /
-                        5.3,
+                    width: MediaQuery.of(context).size.width * 1.2 / 5.3,
                     child: SvgPicture.asset(
                         "assets/images/Profile.svg")),//Profile.svg
               ),
