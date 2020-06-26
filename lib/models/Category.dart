@@ -1,8 +1,3 @@
-
-
-
-import 'package:flutter/cupertino.dart';
-
 class Category {
 
   int _id;

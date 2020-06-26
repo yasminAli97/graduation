@@ -17,6 +17,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:projectflutterapp/screens/categoriesScreen.dart';
 import 'package:projectflutterapp/screens/friends.dart';
 import 'package:projectflutterapp/screens/task_attribute.dart';
+import 'package:projectflutterapp/utility/notifications.dart';
 import 'package:projectflutterapp/utility/score_shape.dart';
 import 'package:projectflutterapp/services/auth.dart';
 import 'package:projectflutterapp/screens/first_page.dart';
@@ -42,6 +43,7 @@ class _FirstPageState extends State<FirstPage> {
 
   bool isSignedIn = false ;
 
+
   ///--------------------------------------//
 
   ///--------------------------------------//
@@ -61,6 +63,9 @@ class _FirstPageState extends State<FirstPage> {
   Widget build(BuildContext context) {
     if(isSignedIn){
       //return buildHomeScreen();
+
+
+
       return HomeScreen();
     }
     else{

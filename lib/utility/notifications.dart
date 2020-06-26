@@ -10,22 +10,15 @@ import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
 import 'package:rxdart/subjects.dart';
 
-class Notifications extends StatefulWidget {
-  @override
-  _NotificationsState createState() => _NotificationsState();
-}
 
-class _NotificationsState extends State<Notifications> {
+class Notifications{
 
   final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
   FlutterLocalNotificationsPlugin();
 
-  @override
-  Widget build(BuildContext context) {
-    return Container();
-  }
 
-  Future<void> _showNotification() async {
+
+  Future<void> showNotification() async {
     var androidPlatformChannelSpecifics = AndroidNotificationDetails(
         'your channel id', 'your channel name', 'your channel description',
         importance: Importance.Max, priority: Priority.High, ticker: 'ticker');
@@ -37,11 +30,11 @@ class _NotificationsState extends State<Notifications> {
         payload: 'item x');
   }
 
-  Future<void> _cancelNotification() async {
+  Future<void> cancelNotification() async {
     await flutterLocalNotificationsPlugin.cancel(0);
   }
 
-  Future<void> _showNotificationWithNoBody() async {
+  Future<void> showNotificationWithNoBody() async {
     var androidPlatformChannelSpecifics = AndroidNotificationDetails(
         'your channel id', 'your channel name', 'your channel description',
         importance: Importance.Max, priority: Priority.High, ticker: 'ticker');
@@ -55,7 +48,7 @@ class _NotificationsState extends State<Notifications> {
 
 
   /// Schedules a notification that specifies a different icon, sound and vibration pattern
-  Future<void> _scheduleNotification() async {
+  Future<void> scheduleNotification() async {
     var scheduledNotificationDateTime =
     DateTime.now().add(Duration(seconds: 5));
     var vibrationPattern = Int64List(4);
@@ -89,7 +82,7 @@ class _NotificationsState extends State<Notifications> {
         platformChannelSpecifics);
   }
 
-  Future<void> _showNotificationWithNoSound() async {
+  Future<void> showNotificationWithNoSound() async {
     var androidPlatformChannelSpecifics = AndroidNotificationDetails(
         'silent channel id',
         'silent channel name',
@@ -103,7 +96,7 @@ class _NotificationsState extends State<Notifications> {
     await flutterLocalNotificationsPlugin.show(0, '<b>silent</b> title',
         '<b>silent</b> body', platformChannelSpecifics);
   }
-  Future<void> _showDailyAtTime() async {
+  Future<void> showDailyAtTime() async {
     var time = Time(10, 0, 0);
     var androidPlatformChannelSpecifics = AndroidNotificationDetails(
         'repeatDailyAtTime channel id',
@@ -119,7 +112,7 @@ class _NotificationsState extends State<Notifications> {
         time,
         platformChannelSpecifics);
   }
-  Future<void> _showWeeklyAtDayAndTime() async {
+  Future<void> showWeeklyAtDayAndTime() async {
     var time = Time(10, 0, 0);
     var androidPlatformChannelSpecifics = AndroidNotificationDetails(
         'show weekly channel id',

@@ -19,6 +19,9 @@ class SQL_Helper{
     return sql_helper;
   }
 
+  final String scoreTable = "score";
+  final String _score ="_score";
+
   final String categoriesTable = "categories";
   final String _catId = "_id";
   final String _catTitle = "_title";
@@ -65,6 +68,9 @@ class SQL_Helper{
   }
 
   void createDatabase (Database db , int version) async{
+
+    String sql0 = "CREATE TABLE $scoreTable($_score INTEGER)";
+    await  db.execute(sql0);
 
     String sql = "CREATE TABLE $categoriesTable($_catId INTEGER PRIMARY KEY AUTOINCREMENT,$_catTitle TEXT,$_catDescription TEXT )";
     await  db.execute(sql);
