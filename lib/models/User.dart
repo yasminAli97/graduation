@@ -45,7 +45,8 @@ User.fromSnapShot(DataSnapshot snapshot){
   final String username;
   final String url;
   final String email;
- // final String bio;
+  final String bio;
+  final int score;
 
   User({
     this.id,
@@ -53,6 +54,8 @@ User.fromSnapShot(DataSnapshot snapshot){
     this.username,
     this.url,
     this.email,
+    this.bio,
+    this.score
   });
 
 
@@ -61,9 +64,11 @@ User.fromSnapShot(DataSnapshot snapshot){
       id: doc.documentID,
       email: doc['email'],
       username: doc['username'],
-      url: doc['photoUrl'],
-      profileName: doc['displayName'],
-      //bio: doc['bio'],
+      url: doc['url'],
+      profileName: doc['profileName'],
+      bio: doc['bio'],
+      score: doc["score"]
+
     );
   }
 
