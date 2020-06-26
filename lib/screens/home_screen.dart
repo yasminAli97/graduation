@@ -17,10 +17,14 @@ import 'package:projectflutterapp/screens/first_page.dart';
 import 'package:projectflutterapp/screens/ProfilePage.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
+
+import 'friends_pages/FriendsPages.dart';
+
 final FirstPage firstPage = FirstPage();
 
+
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-    FlutterLocalNotificationsPlugin();
+FlutterLocalNotificationsPlugin();
 
 // Streams are created so that app can respond to notification-related events since the plugin is initialised in the `main` function
 
@@ -39,6 +43,7 @@ class _HomeScreen extends State<HomeScreen> {
 
   int tasksCount;
   Notifications n = Notifications();
+
   //final AuthServices _auth = AuthServices();
 
   @override
@@ -52,12 +57,12 @@ class _HomeScreen extends State<HomeScreen> {
   void _requestIOSPermissions() {
     flutterLocalNotificationsPlugin
         .resolvePlatformSpecificImplementation<
-            IOSFlutterLocalNotificationsPlugin>()
+        IOSFlutterLocalNotificationsPlugin>()
         ?.requestPermissions(
-          alert: true,
-          badge: true,
-          sound: true,
-        );
+      alert: true,
+      badge: true,
+      sound: true,
+    );
   }
 
   void _configureDidReceiveLocalNotificationSubject() {
@@ -65,30 +70,31 @@ class _HomeScreen extends State<HomeScreen> {
         .listen((ReceivedNotification receivedNotification) async {
       await showDialog(
         context: context,
-        builder: (BuildContext context) => CupertinoAlertDialog(
-          title: receivedNotification.title != null
-              ? Text(receivedNotification.title)
-              : null,
-          content: receivedNotification.body != null
-              ? Text(receivedNotification.body)
-              : null,
-          actions: [
-            CupertinoDialogAction(
-              isDefaultAction: true,
-              child: Text('Ok'),
-              onPressed: () async {
-                Navigator.of(context, rootNavigator: true).pop();
-                await Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) =>
-                        SecondScreen(receivedNotification.payload),
-                  ),
-                );
-              },
-            )
-          ],
-        ),
+        builder: (BuildContext context) =>
+            CupertinoAlertDialog(
+              title: receivedNotification.title != null
+                  ? Text(receivedNotification.title)
+                  : null,
+              content: receivedNotification.body != null
+                  ? Text(receivedNotification.body)
+                  : null,
+              actions: [
+                CupertinoDialogAction(
+                  isDefaultAction: true,
+                  child: Text('Ok'),
+                  onPressed: () async {
+                    Navigator.of(context, rootNavigator: true).pop();
+                    await Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            SecondScreen(receivedNotification.payload),
+                      ),
+                    );
+                  },
+                )
+              ],
+            ),
       );
     });
   }
@@ -126,119 +132,133 @@ class _HomeScreen extends State<HomeScreen> {
 //      ),
         backgroundColor: Color(0xff9966FF),
         body: SingleChildScrollView(
-          child: Container(
-            width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height,
+            child: Container(
+                width: MediaQuery
+                    .of(context)
+                    .size
+                    .width,
+                height: MediaQuery
+                    .of(context)
+                    .size
+                    .height,
 //            margin: EdgeInsets.only(bottom: 10),
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage("assets/images/background.png"),
-                fit: BoxFit.fill,
-              ),
-            ),
-            child: Column(children: <Widget>[
-              Container(
-                  alignment: AlignmentDirectional.topStart,
-                  child: Column(children: <Widget>[
-                    Row(
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage("assets/images/background.png"),
+                    fit: BoxFit.fill,
+                  ),
+                ),
+                child: Column(children: <Widget>[
+                  Container(
+                      alignment: AlignmentDirectional.topStart,
+                      child: Column(children: <Widget>[
+                      Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        GestureDetector(
-                          onTap: () {
-                            showDialog(
-                                context: context,
-                                builder: (_) => Center(child: scoreShape()));
-                          },
-                          child: Stack(
-                            alignment: AlignmentDirectional.center,
-                            children: <Widget>[
-                              Container(
-                                width:
-                                    MediaQuery.of(context).size.width * 1.4 / 4,
-                                height: 80,
-                                decoration: new BoxDecoration(
-                                  color: Color(0xffA57DF4),
-                                  shape: BoxShape.rectangle,
-                                  borderRadius: BorderRadius.only(
-                                      bottomRight: Radius.circular(50),
-                                      bottomLeft: Radius.circular(0),
-                                      topLeft: Radius.circular(0),
-                                      topRight: Radius.circular(0)),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Color(0xffBBB4C9).withOpacity(.35),
-                                      blurRadius: 15.0,
-                                      offset: const Offset(0.0, 10.0), //
-                                    ),
-                                  ],
-                                ),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
-                                  children: <Widget>[
-                                    Container(
-                                      child: SvgPicture.asset(
-                                          "assets/images/champion.svg"),
-                                    ),
-                                    Column(
-                                      children: <Widget>[
-                                        Container(
-                                          child: Text(
-                                            "Score",
-                                            style: TextStyle(
-                                              fontFamily: "Segoe UI",
-                                              fontSize: 20,
-                                              color: Colors.white,
-                                            ),
-                                          ),
-                                        ),
-                                        Stack(
-                                          alignment:
-                                              AlignmentDirectional.center,
-                                          children: <Widget>[
-                                            Container(
-                                                width: 30,
-                                                height: 5,
-                                                decoration:
-                                                    BoxDecoration(boxShadow: [
-                                                  BoxShadow(
-                                                      color: Color(0xffFFCC00),
-                                                      offset: Offset(0, 2),
-                                                      blurRadius: 17,
-                                                      spreadRadius: 1)
-                                                ])),
-                                            Container(
-                                              child: Text(
-                                                score.toString(),
-                                                style: TextStyle(
-                                                    fontFamily: "Segoe UI",
-                                                    fontSize: 20,
-                                                    color: Color(0xffFFCC00),
-                                                    fontWeight:
-                                                        FontWeight.bold),
+                        children: <Widget>[
+                          GestureDetector(
+                            onTap: () {
+                              showDialog(
+                                  context: context,
+                                  builder: (_) => Center(child: scoreShape()));
+                            },
+                            child: Stack(
+                              alignment: AlignmentDirectional.center,
+                              children: <Widget>[
+                                Container(
+                                  width:
+                                  MediaQuery
+                                      .of(context)
+                                      .size
+                                      .width * 1.4 / 4,
+                                  height: 80,
+                                  decoration: new BoxDecoration(
+                                    color: Color(0xffA57DF4),
+                                    shape: BoxShape.rectangle,
+                                    borderRadius: BorderRadius.only(
+                                        bottomRight: Radius.circular(50),
+                                        bottomLeft: Radius.circular(0),
+                                        topLeft: Radius.circular(0),
+                                        topRight: Radius.circular(0)),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Color(0xffBBB4C9).withOpacity(
+                                            .35),
+                                        blurRadius: 15.0,
+                                        offset: const Offset(0.0, 10.0), //
+                                      ),
+                                    ],
+                                  ),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                    children: <Widget>[
+                                      Container(
+                                        child: SvgPicture.asset(
+                                            "assets/images/champion.svg"),
+                                      ),
+                                      Column(
+                                        children: <Widget>[
+                                          Container(
+                                            child: Text(
+                                              "Score",
+                                              style: TextStyle(
+                                                fontFamily: "Segoe UI",
+                                                fontSize: 20,
+                                                color: Colors.white,
                                               ),
                                             ),
-                                          ],
-                                        ),
-                                      ],
-                                    )
-                                  ],
+                                          ),
+                                          Stack(
+                                            alignment:
+                                            AlignmentDirectional.center,
+                                            children: <Widget>[
+                                              Container(
+                                                  width: 30,
+                                                  height: 5,
+                                                  decoration:
+                                                  BoxDecoration(boxShadow: [
+                                                    BoxShadow(
+                                                        color: Color(
+                                                            0xffFFCC00),
+                                                        offset: Offset(0, 2),
+                                                        blurRadius: 17,
+                                                        spreadRadius: 1)
+                                                  ])),
+                                              Container(
+                                                child: Text(
+                                                  score.toString(),
+                                                  style: TextStyle(
+                                                      fontFamily: "Segoe UI",
+                                                      fontSize: 20,
+                                                      color: Color(0xffFFCC00),
+                                                      fontWeight:
+                                                      FontWeight.bold),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      )
+                                    ],
+                                  ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
-                        ),
-                        Container(
-                          width: MediaQuery.of(context).size.width * 1.2 / 4,
-                          height: 75,
-                          decoration: new BoxDecoration(
-                            color: Color(0xffBCAAE0).withOpacity(.35),
-                            shape: BoxShape.rectangle,
-                            borderRadius: BorderRadius.only(
-                                bottomRight: Radius.circular(0),
-                                bottomLeft: Radius.circular(50),
-                                topLeft: Radius.circular(0),
-                                topRight: Radius.circular(0)),
+                          Container(
+                            width: MediaQuery
+                                .of(context)
+                                .size
+                                .width * 1.2 / 4,
+                            height: 75,
+                            decoration: new BoxDecoration(
+                              color: Color(0xffBCAAE0).withOpacity(.35),
+                              shape: BoxShape.rectangle,
+                              borderRadius: BorderRadius.only(
+                                  bottomRight: Radius.circular(0),
+                                  bottomLeft: Radius.circular(50),
+                                  topLeft: Radius.circular(0),
+                                  topRight: Radius.circular(0)),
 //                              boxShadow: [
 //                                BoxShadow(
 //                                  color: Color(0xffBBB4C9).withOpacity(.35),
@@ -246,172 +266,279 @@ class _HomeScreen extends State<HomeScreen> {
 //                                  offset: const Offset(0.0, 10.0),
 //                                ),
 //                              ],
-                          ),
-                          child: GestureDetector(
-                            onTap: () {
-                              Navigator.of(context).pushNamed(ADD_NEW_TASK);
-                            },
-                            child: Container(
-                              width:
-                                  MediaQuery.of(context).size.width * 1.6 / 4,
-                              height: 80,
-                              decoration: new BoxDecoration(
-                                color: Color(0xffBCAAE0).withOpacity(.35),
-                                shape: BoxShape.rectangle,
-                                borderRadius: BorderRadius.only(
-                                    bottomRight: Radius.circular(0),
-                                    bottomLeft: Radius.circular(50),
-                                    topLeft: Radius.circular(0),
-                                    topRight: Radius.circular(0)),
-                              ),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                children: <Widget>[
-                                  SvgPicture.asset(
-                                    "assets/images/ic_plus.svg",
-                                  ),
-                                ],
+                            ),
+                            child: GestureDetector(
+                              onTap: () {
+                                Navigator.of(context).pushNamed(ADD_NEW_TASK);
+                              },
+                              child: Container(
+                                width:
+                                MediaQuery
+                                    .of(context)
+                                    .size
+                                    .width * 1.6 / 4,
+                                height: 80,
+                                decoration: new BoxDecoration(
+                                  color: Color(0xffBCAAE0).withOpacity(.35),
+                                  shape: BoxShape.rectangle,
+                                  borderRadius: BorderRadius.only(
+                                      bottomRight: Radius.circular(0),
+                                      bottomLeft: Radius.circular(50),
+                                      topLeft: Radius.circular(0),
+                                      topRight: Radius.circular(0)),
+                                ),
+                                child: Row(
+                                  mainAxisAlignment:
+                                  MainAxisAlignment.spaceEvenly,
+                                  children: <Widget>[
+                                    SvgPicture.asset(
+                                      "assets/images/ic_plus.svg",
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 65),
-                    Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: <Widget>[
+                        ],
+                      ),
+                      SizedBox(height: 65),
+                      Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: <Widget>[
                           SizedBox(height: 20),
-                          GestureDetector(
-                            onTap: () {
-                              Navigator.of(context)
-                                  .pushNamed(CATEGORIES_SCREEN);
-                            },
-                            child: Container(
-                              alignment: AlignmentDirectional.center,
-                              height:
-                                  MediaQuery.of(context).size.height * 3.59 / 9,
-                              width: MediaQuery.of(context).size.width,
-                              margin: EdgeInsets.only(left: 20, right: 20),
-                              child: Stack(
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.of(context)
+                              .pushNamed(CATEGORIES_SCREEN);
+                        },
+                        child: Container(
+                          alignment: AlignmentDirectional.center,
+                          height:
+                          MediaQuery
+                              .of(context)
+                              .size
+                              .height * 3.59 / 9,
+                          width: MediaQuery
+                              .of(context)
+                              .size
+                              .width,
+                          margin: EdgeInsets.only(left: 20, right: 20),
+                          child: Stack(
+                            alignment: AlignmentDirectional.center,
+                            children: <Widget>[
+                              SvgPicture.asset(
+                                  "assets/images/ic_middle.svg"),
+                              Stack(
                                 alignment: AlignmentDirectional.center,
                                 children: <Widget>[
-                                  SvgPicture.asset(
-                                      "assets/images/ic_middle.svg"),
-                                  Stack(
-                                    alignment: AlignmentDirectional.center,
-                                    children: <Widget>[
-                                      Container(
-                                          width: 130,
-                                          height: 5,
-                                          decoration: BoxDecoration(boxShadow: [
-                                            BoxShadow(
-                                                color: Color(0xffFFCC00),
-                                                offset: Offset(0, 2),
-                                                blurRadius: 17,
-                                                spreadRadius: 1)
-                                          ])),
-                                      Center(
-                                        child: Text("Categories",
-                                            style: TextStyle(
-                                              fontFamily: "Segoe UI",
-                                              fontSize: 25,
-                                              color: Color(0xffFFCC00),
-                                            )),
-                                      ),
-                                    ],
-                                  )
+                                  Container(
+                                      width: 130,
+                                      height: 5,
+                                      decoration: BoxDecoration(boxShadow: [
+                                        BoxShadow(
+                                            color: Color(0xffFFCC00),
+                                            offset: Offset(0, 2),
+                                            blurRadius: 17,
+                                            spreadRadius: 1)
+                                      ])),
+                                  Center(
+                                    child: Text("Categories",
+                                        style: TextStyle(
+                                          fontFamily: "Segoe UI",
+                                          fontSize: 25,
+                                          color: Color(0xffFFCC00),
+                                        )),
+                                  ),
                                 ],
-                              ),
-                            ),
-                          ),
-                          Stack(
-                            children: <Widget>[
-                              if(isMore)  showMoreIcons(context),
-                              Container(
-                                  width: MediaQuery.of(context).size.width,
-                                  margin: EdgeInsets.only(top: 65),
-                                  child: Row(
-                                      mainAxisSize: MainAxisSize.min,
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      children: <Widget>[
-                                        GestureDetector(
-                                          child: Container(
-                                              width: MediaQuery.of(context)
-                                                  .size
-                                                  .width *
-                                                  1.2 /
-                                                  6,
-                                              child: SvgPicture.asset(
-                                                  "assets/images/setting.svg")),
-                                        ),
-                                        GestureDetector(
-                                          onTap: () {
-                                            Navigator.push(context,
-                                                MaterialPageRoute(
-                                                    builder: (context) {
-                                                      return Friends();
-                                                    }));
-                                          },
-                                          child: Container(
-                                              width: MediaQuery.of(context)
-                                                  .size
-                                                  .width *
-                                                  1.2 /
-                                                  5,
-                                              child: SvgPicture.asset(
-                                                  "assets/images/ic_friends.svg")),
-                                        ),
-                                        GestureDetector(
-                                          child: Container(
-                                            width:
-                                            MediaQuery.of(context).size.width *
-                                                1.2 /
-                                                5,
-                                            child: SvgPicture.asset(
-                                                "assets/images/circle_share.svg"),
-                                          ),
-                                        ),
-                                        GestureDetector(
-                                          onTap: () {
-                                            setState(() {
-                                              isMore = !isMore;
-                                            });
-                                          },
-                                          child: Container(
-                                            width:
-                                            MediaQuery.of(context).size.width *
-                                                1.2 /
-                                                5,
-                                            child: SvgPicture.asset(
-                                                "assets/images/ic_more.svg"),
-                                          ),
-                                        ),
-                                      ]))
+                              )
                             ],
-                          )
+                          ),
+                        ),
+                      ),
 
-                        ])
-                  ]))
+                      Stack(
+                        children: <Widget>[
+                          if(isMore) showMoreIcons(context),
+                          Container(
+                              width: MediaQuery
+                                  .of(context)
+                                  .size
+                                  .width,
+                              margin: EdgeInsets.only(top: 65),
+                              child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: <Widget>[
+                                    GestureDetector(
+                                      child: Container(
+                                          width: MediaQuery
+                                              .of(context)
+                                              .size
+                                              .width *
+                                              1.2 /
+                                              6,
+                                          child: SvgPicture.asset(
+                                              "assets/images/setting.svg")),
+                                    ),
+                                    GestureDetector(
+                                      onTap: () {
+                                        Navigator.push(context,
+                                            MaterialPageRoute(
+                                                builder: (context) {
+                                                  return Friends();
+                                                }));
+                                      },
+                                      child: Container(
+                                          width: MediaQuery
+                                              .of(context)
+                                              .size
+                                              .width *
+                                              1.2 /
+                                              5,
+                                          child: SvgPicture.asset(
+                                              "assets/images/ic_friends.svg")),
+                                    ),
+                                    GestureDetector(
+                                      child: Container(
+                                        width:
+                                        MediaQuery
+                                            .of(context)
+                                            .size
+                                            .width *
+                                            1.2 /
+                                            5,
+                                        child: SvgPicture.asset(
+                                            "assets/images/circle_share.svg"),
+                                      ),
+                                    ),
+                                    GestureDetector(
+                                      onTap: () {
+                                        setState(() {
+                                          isMore = !isMore;
+                                        });
+                                      },
+                                      child: Container(
+                                        width:
+                                        MediaQuery
+                                            .of(context)
+                                            .size
+                                            .width *
+                                            1.2 /
+                                            5,
+                                        child: SvgPicture.asset(
+                                            "assets/images/ic_more.svg"),
+                                      ),
+                                    ),
+                                  ]))
+                        ],
+                      )
+
+                      ,
+                      Container(
+                          width: MediaQuery
+                              .of(context)
+                              .size
+                              .width,
+                          margin: EdgeInsets.only(left: 10, right: 10),
+                          child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                GestureDetector(
+                                  child: Container(
+                                      width: MediaQuery
+                                          .of(context)
+                                          .size
+                                          .width *
+                                          1.2 /
+                                          6,
+                                      child: SvgPicture.asset(
+                                          "assets/images/setting.svg")),
+                                ),
+                                GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(context,
+                                        MaterialPageRoute(builder: (context) {
+                                          return FriendsPages();
+                                        }));
+                                  },
+                                  child: Container(
+                                      width: MediaQuery
+                                          .of(context)
+                                          .size
+                                          .width *
+                                          1.2 /
+                                          5,
+                                      child: SvgPicture.asset(
+                                          "assets/images/ic_friends.svg")),
+                                ),
+                                GestureDetector(
+                                  child: Container(
+                                    width: MediaQuery
+                                        .of(context)
+                                        .size
+                                        .width *
+                                        1.2 /
+                                        5,
+                                    child: SvgPicture.asset(
+                                        "assets/images/circle_share.svg"),
+                                  ),
+                                ),
+                                GestureDetector(
+                                  onTap: () {
+                                    setState(() {
+                                      isMore = !isMore;
+                                    });
+                                  },
+                                  child: Container(
+                                    width: MediaQuery
+                                        .of(context)
+                                        .size
+                                        .width *
+                                        1.2 /
+                                        5,
+                                    child: SvgPicture.asset(
+                                        "assets/images/ic_more.svg"),
+                                  ),
+                                ),
+                              ])),
+                      SizedBox(height: 20),
+                      FlatButton.icon(
+                        icon: Icon(Icons.person),
+                        label: Text("logout"),
+                        onPressed: firstPage.logoutUser,
+                      )
+                      ])
+                ]))
             ]),
-          ),
-        ),
       ),
+    ),)
+    ,
     );
   }
 
   Widget showMoreIcons(BuildContext context) {
     return Container(
-        width: MediaQuery.of(context).size.width,
+        width: MediaQuery
+            .of(context)
+            .size
+            .width,
         margin: EdgeInsets.only(right: 10),
         child: Row(
             mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               GestureDetector(
+                /*onTap: () {
+                    Navigator.push(context,MaterialPageRoute(builder: (context) {
+                    return FriendsPages();
+                    }));
+                    },*/
                 child: Container(
-                    width: MediaQuery.of(context).size.width * 1.2 / 5.3,
+                    width: MediaQuery
+                        .of(context)
+                        .size
+                        .width * 1.2 / 5.3,
                     child: SvgPicture.asset(
                         "assets/images/Profile.svg")), //Profile.svg
               ),
@@ -422,17 +549,22 @@ class _HomeScreen extends State<HomeScreen> {
                   }));
                 },
                 child: Container(
-                    width: MediaQuery.of(context).size.width * 1.2 / 5,
+                    width: MediaQuery
+                        .of(context)
+                        .size
+                        .width * 1.2 / 5,
                     child: SvgPicture.asset(
                         "assets/images/Complitedtasks.svg")), //ic_friends.svg///rating.svg**
               ),
               GestureDetector(
-                onTap: (){
-
+                onTap: () {
                   n.showNotification();
                 },
                 child: Container(
-                  width: MediaQuery.of(context).size.width * 1.2 / 5,
+                  width: MediaQuery
+                      .of(context)
+                      .size
+                      .width * 1.2 / 5,
                   child: SvgPicture.asset("assets/images/rating.svg"),
 
                   ///rating.svg**
@@ -445,9 +577,12 @@ class _HomeScreen extends State<HomeScreen> {
                   });
                 },
                 child: Container(
-                  width: MediaQuery.of(context).size.width * 1.2 / 5.5,
+                  width: MediaQuery
+                      .of(context)
+                      .size
+                      .width * 1.2 / 5.5,
                   child:
-                      SvgPicture.asset("assets/images/about.svg"), //about.svg
+                  SvgPicture.asset("assets/images/about.svg"), //about.svg
                 ),
               ),
             ]));
