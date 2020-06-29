@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:projectflutterapp/models/User.dart';
 import '../ProfilePage.dart';
 import '../first_page.dart';
+import 'package:projectflutterapp/screens/profile/PrfilePage.dart';
 
 
 //final usersReference = Firestore.instance.collection("users");
@@ -189,7 +190,7 @@ class UserResult extends StatelessWidget {
         child: Column(
           children: <Widget>[
             GestureDetector(
-              onTap: ()=> "tapped",/*displayUserProfile(context , userProfileId:eachUser.id */ /*getCurrentOnlineUser()),*/
+              onTap: ()=> displayUserProfile(context , userProfileId:eachUser.id), /*"tapped",*//* */ /*getCurrentOnlineUser()),*/
               child: ListTile(
                 leading: CircleAvatar(
                   backgroundColor: Colors.black,
@@ -203,7 +204,7 @@ class UserResult extends StatelessWidget {
                       color: Colors.black , fontSize: 16.0 , fontWeight: FontWeight.bold
                   ),),
                 subtitle: Text(
-                  eachUser.username ,
+                  eachUser.bio ,
                   style: TextStyle( color: Colors.black, fontSize: 13.0 ,),
                 ),
               ),
@@ -214,7 +215,14 @@ class UserResult extends StatelessWidget {
     );
   }
 
-  /*displayUserProfile(BuildContext context , {String userProfileId}){
+
+  displayUserProfile(BuildContext context , {String userProfileId}){
     Navigator.push(context , MaterialPageRoute(builder: (context) => ProfilePage(userProfileId: userProfileId)));
-  }*/
+  }
+
+
 }
+
+
+
+/////////////////////////////////////////////////////////////////////////////

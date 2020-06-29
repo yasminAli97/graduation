@@ -8,16 +8,16 @@ import 'package:projectflutterapp/screens/SecondScreen.dart';
 import 'package:projectflutterapp/screens/addTaskScreen.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:projectflutterapp/screens/categoriesScreen.dart';
-import 'package:projectflutterapp/screens/friends.dart';
+//import 'package:projectflutterapp/screens/friends.dart';
 import 'package:projectflutterapp/screens/task_attribute.dart';
 import 'package:projectflutterapp/utility/notifications.dart';
 import 'package:projectflutterapp/utility/score_shape.dart';
 import 'package:projectflutterapp/services/auth.dart';
 import 'package:projectflutterapp/screens/first_page.dart';
-import 'package:projectflutterapp/screens/ProfilePage.dart';
+//import 'package:projectflutterapp/screens/ProfilePage.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-
-
+import 'package:projectflutterapp/screens/profile/PrfilePage.dart';
+//import 'first_page.dart';
 import 'friends_pages/FriendsPages.dart';
 
 final FirstPage firstPage = FirstPage();
@@ -452,11 +452,12 @@ class _HomeScreen extends State<HomeScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               GestureDetector(
-                /*onTap: () {
-                    Navigator.push(context,MaterialPageRoute(builder: (context) {
-                    return FriendsPages();
-                    }));
-                    },*/
+                onTap: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    return ProfilePage(userProfileId: currentUser.id);
+                    // return MyWidget();
+                  }));
+                },
                 child: Container(
                     width: MediaQuery
                         .of(context)
@@ -466,11 +467,6 @@ class _HomeScreen extends State<HomeScreen> {
                         "assets/images/Profile.svg")), //Profile.svg
               ),
               GestureDetector(
-                onTap: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return MyWidget();
-                  }));
-                },
                 child: Container(
                     width: MediaQuery
                         .of(context)

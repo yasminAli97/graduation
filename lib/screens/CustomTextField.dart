@@ -5,12 +5,13 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 class TextFieldItem extends StatelessWidget {
   TextFieldItem(this.iconA, this.label, this.hint);
-  TextFieldItem.addSecondIcon(this.iconA, this.label, this.hint, this.iconB);
+  TextFieldItem.addSecondIcon(this.iconA, this.label, this.hint, this.iconB, [this.tec]);
 
   Widget iconA;
   String label;
   String hint;
   Widget iconB;
+  TextEditingController tec;
 
   @override
   Widget build(BuildContext context) {
@@ -39,6 +40,7 @@ class TextFieldItem extends StatelessWidget {
                 hintText: hint,
                 suffixIcon: iconB,
               ),
+              controller: tec,
             ),
           ),
         ],
