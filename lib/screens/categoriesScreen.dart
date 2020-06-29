@@ -43,16 +43,7 @@ class _CategoriesScreen extends State<CategoriesScreen> {
   TextEditingController controller = TextEditingController();
 
   TextEditingController _searchQuery = TextEditingController();
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    setState(() {
-      addDefCat();
-    });
-
-  }
+  bool isEmpty=true;
 
 
   @override
@@ -63,15 +54,7 @@ class _CategoriesScreen extends State<CategoriesScreen> {
           body: SingleChildScrollView(
             child: Container(
                 width: MediaQuery.of(context).size.width,
-
-//                decoration: BoxDecoration(
-//                  image: DecorationImage(
-//                    image: AssetImage("assets/images/background.png"),
-//                    fit: BoxFit.fill,
-//                  ),
-//                ),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: <Widget>[
                     Container(
                       alignment: AlignmentDirectional.topStart,
@@ -248,7 +231,7 @@ class _CategoriesScreen extends State<CategoriesScreen> {
                                 ),
                                 Padding(
                                   padding:
-                                      const EdgeInsets.only(left: 35, top: 16),
+                                      const EdgeInsets.only(left: 50, top: 16),
                                   child: TextField(
                                     controller: _searchQuery,
                                     textAlign: TextAlign.start,
@@ -312,10 +295,13 @@ class _CategoriesScreen extends State<CategoriesScreen> {
                 itemBuilder: (context, index) {
                   return GestureDetector(
                     onTap: () {
+                      setState(() {
+                        getTasks(asyncSnapshot.data[index].id);
+                      });
                       Navigator.push(context,
                           MaterialPageRoute(builder: (context) {
-                        return CategoryDetails(asyncSnapshot.data[index],
-                            getTasks(asyncSnapshot.data[index].id));
+                        return CategoryDetails(asyncSnapshot.data[index], isEmpty
+                        );
                       }));
                     },
                     child: Center(
@@ -326,13 +312,9 @@ class _CategoriesScreen extends State<CategoriesScreen> {
                           IconSlideAction(
                             color: Colors.transparent,
                             onTap: () {
-                              setState(() {
-                             if( asyncSnapshot.data[index].title != 'Default')
-                                deleteCategory(asyncSnapshot.data[index]);
-                              });
-//                              showDialog(
-//                                  context: context,
-//                                  builder: (_) => showEditAlert());
+                              showDialog(
+                                  context: context,
+                                  builder: (_) => showEditAlert(asyncSnapshot.data[index]));
                             },
                             iconWidget: mySlider(),
                           )
@@ -594,6 +576,8 @@ class _CategoriesScreen extends State<CategoriesScreen> {
 
   void deleteCategory(Category category) async {
     int result = await dbHelper.deleteCategory(category.id);
+    int resultTask = await dbHelper.deleteTaskForCat(category.id);
+    print("$resultTask taskaty");
 
     if (result == 0) {
       Fluttertoast.showToast(
@@ -604,7 +588,9 @@ class _CategoriesScreen extends State<CategoriesScreen> {
           backgroundColor: Colors.red,
           textColor: Colors.white,
           fontSize: 16.0);
+
     } else {
+      Navigator.of(context).pop();
       Fluttertoast.showToast(
           msg: "Category has been deleted successfully",
           toastLength: Toast.LENGTH_SHORT,
@@ -613,6 +599,8 @@ class _CategoriesScreen extends State<CategoriesScreen> {
           backgroundColor: Colors.grey,
           textColor: Colors.black,
           fontSize: 16.0);
+
+
     }
   }
 
@@ -634,8 +622,9 @@ class _CategoriesScreen extends State<CategoriesScreen> {
         ));
   }
 
-  showEditAlert() {
-    return Center(
+  showEditAlert(Category category) {
+    return Container(
+      alignment: AlignmentDirectional.center,
       child: Material(
         color: Colors.transparent,
         child: Stack(
@@ -712,7 +701,11 @@ class _CategoriesScreen extends State<CategoriesScreen> {
                         FlatButton(
                           onPressed: () {
                             setState(() {
-                              deleteCategory(category);
+                              setState(() {
+                                if(category.title != 'Default')
+                                  deleteCategory(category);
+                              });
+
                             });
                           },
                           child: Text("Delete Category",
@@ -726,6 +719,7 @@ class _CategoriesScreen extends State<CategoriesScreen> {
                         FlatButton(
                           onPressed: () {
                             setState(() {
+                              if(category.title != 'Default')
                               updateCategoryTitle(category);
                             });
                           },
@@ -819,71 +813,17 @@ class _CategoriesScreen extends State<CategoriesScreen> {
     );
   }
 
-  bool getTasks(int id) {
-    bool isEmpty;
-    FutureBuilder<List<Task>>(
-        future: dbHelper.tasksOfCategory(id),
-        builder:
-            (BuildContext context, AsyncSnapshot<List<Task>> asyncSnapshot) {
-          if (asyncSnapshot.data.length == 0) {
-            isEmpty = true;
-          } else {
-            isEmpty = false;
-          }
-        });
-    return isEmpty;
-  }
+  void getTasks(int id) async {
+    int r = await dbHelper.queryTasksCountCatId(id);
+    print("$r anaa");
+    if(r==0)
+    isEmpty = true;
+    else
+      isEmpty = false;
 
-  /**//////////  Add Default Category  //////////////////**/
-
-  void addDefCat() async{
-    Category default1 = new Category();
-    default1.title ='Default';
-   int i = await dbHelper.queryCategoriesCount();
-    print(i);
-    if(i == 0)
-      addCategory(default1);
   }
 
 
-
-//  Widget defaultCat() {
-//    return GestureDetector(
-//      onTap: () {
-//        Navigator.push(context,
-//            MaterialPageRoute(builder: (context) {
-//              return CategoryDetails(asyncSnapshot.data[index],
-//                  getTasks(asyncSnapshot.data[index].id));
-//            }));
-//      },
-//      child: Stack(
-//        alignment: AlignmentDirectional.centerStart,
-//        children: <Widget>[
-//          Container(
-//            height: 52,
-//            width: MediaQuery.of(context).size.width * 4 / 5,
-//            child: CustomPaint(
-//              painter: Chevron(),
-//              child: Center(
-//                child: Text(
-//                  'Default',
-//                  textAlign: TextAlign.center,
-//                  style: TextStyle(
-//                      fontFamily: "Segoe UI",
-//                      fontSize: 20,
-//                      color: colors[0],
-//                      fontWeight: FontWeight.bold),
-//                ),
-//              ),
-//            ),
-//          ),
-//          Container(
-//              margin: EdgeInsetsDirectional.only(top: 5),
-//              child: SvgPicture.asset(colorImageCatg[0])),
-//        ],
-//      ),
-//    );
-//  }
 }
 
 class Chevron extends CustomPainter {

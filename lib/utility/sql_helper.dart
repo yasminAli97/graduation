@@ -35,10 +35,10 @@ class SQL_Helper{
   final String _taskTime = "_time";
   final String _taskDays ="_days";
   final String _taskNotes = "_notes";
-  final String _taskComplete ="_taskComplete";
   final String _taskAddAlert = "_addAlert";
   final String _taskHardness ="_hardness";
   final String _taskCategory ="_category";
+  final String _isCheck ="_isCheck";
 
 
   final String taskDaysTable = "days" ;
@@ -62,7 +62,7 @@ class SQL_Helper{
   Future<Database> initializedDatabase() async{
     Directory directory = await getApplicationDocumentsDirectory();
     String path = directory.path + "project.db";
-    var projectDB= await openDatabase(path , version: 1 , onCreate: createDatabase);
+    var projectDB= await openDatabase(path , version: 2 , onCreate: createDatabase);
 
     return projectDB;
   }
@@ -75,7 +75,7 @@ class SQL_Helper{
     String sql = "CREATE TABLE $categoriesTable($_catId INTEGER PRIMARY KEY AUTOINCREMENT,$_catTitle TEXT,$_catDescription TEXT )";
     await  db.execute(sql);
 
-    String sql2 = "CREATE TABLE $tasksTable($_taskId INTEGER PRIMARY KEY AUTOINCREMENT,$_taskTitle TEXT,$_taskTime TEXT,$_taskNotes TEXT ,$_taskComplete INTEGER ,$_taskAddAlert INTEGER, $_taskHardness INTEGER,$_taskCategory INTEGER)";
+    String sql2 = "CREATE TABLE $tasksTable($_taskId INTEGER PRIMARY KEY AUTOINCREMENT,$_taskTitle TEXT,$_taskTime TEXT,$_taskNotes TEXT ,$_taskAddAlert INTEGER, $_taskHardness INTEGER,$_taskCategory INTEGER ,$_isCheck INTEGER)";
     await  db.execute(sql2);
 
     String sql3 = "CREATE TABLE $taskDaysTable($_dayId INTEGER PRIMARY KEY AUTOINCREMENT,$_dayName TEXT)";
@@ -83,6 +83,35 @@ class SQL_Helper{
 
     String sql4 = "CREATE TABLE $taskDaysConnectTable($_dayIdd INTEGER,$_taskIdd INTEGER)";
     await  db.execute(sql4);
+
+  }
+  /**//////////  Now Score Queries //////////////////**/
+
+  Future<int> insertScore(Score row) async {
+
+    Database db = await this.database;
+    return await db.insert(scoreTable, row.toMap());
+
+  }
+
+  Future<int> updateScore(Score row) async {
+
+    Database db = await sql_helper.database;
+    return await db.update(scoreTable, row.toMap());
+
+  }
+
+  Future<int> queryScoresCount() async {
+    Database db = await this.database;
+    return Sqflite.firstIntValue(await db.rawQuery('SELECT COUNT(*) FROM $scoreTable'));
+  }
+
+
+  Future<List<Score>> showScore() async {
+
+    final Database db = await this.database;
+    final List<Map<String, dynamic>> maps = await db.query(scoreTable);
+    return maps.map((c)=>  Score.fromMap(c)).toList();
 
   }
 
@@ -178,6 +207,14 @@ class SQL_Helper{
 
   }
 
+  Future<List<Task>> showDoneTasks() async {
+
+    final Database db = await this.database;
+    final List<Map<String, dynamic>> maps = await db.query(tasksTable,where: '$_isCheck = 1');
+    return maps.map((c)=>  Task.fromMap(c)).toList();
+
+  }
+
   Future<List<Task>>  tasksOfCategory(int catId) async {
     final Database db = await this.database;
     final List<Map<String, dynamic>> maps = await db.query(tasksTable,where: '$_taskCategory = ?', whereArgs: [catId]);
@@ -185,12 +222,15 @@ class SQL_Helper{
 
 
   }
-
-
-    Future<int> queryTasksCount() async {
+  Future<int> queryTasksCount() async {
     Database db = await this.database;
     return Sqflite.firstIntValue(await db.rawQuery('SELECT COUNT(*) FROM $tasksTable'));
   }
+  Future<int> queryTasksCountCatId(int catId) async {
+    Database db = await this.database;
+    return Sqflite.firstIntValue(await db.rawQuery('SELECT COUNT(*) FROM $tasksTable where $_taskCategory = $catId'));
+  }
+
 
 
 
@@ -198,6 +238,15 @@ class SQL_Helper{
     Database db = await sql_helper.database;
     return await db.delete(tasksTable, where: '$_taskId = ?', whereArgs: [id]);
   }
+
+
+  Future<int> deleteTaskForCat(int CatId) async {
+    Database db = await sql_helper.database;
+    return await db.delete(tasksTable, where: '$_taskCategory = ?', whereArgs: [CatId]);
+  }
+
+
+
 }
 
 

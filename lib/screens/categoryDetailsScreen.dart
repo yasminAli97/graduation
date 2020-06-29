@@ -9,7 +9,7 @@ import 'package:projectflutterapp/utility/sql_helper.dart';
 
 class CategoryDetails extends StatefulWidget {
   Category category;
-  bool isempty;
+  bool isempty ;
 
   CategoryDetails(this.category, this.isempty);
 
@@ -19,7 +19,7 @@ class CategoryDetails extends StatefulWidget {
 
 class _CategoryDetails extends State<CategoryDetails> {
   Category category;
-  bool isempty;
+  bool isempty ;
 
   TextEditingController _searchQuery = TextEditingController();
 
@@ -44,15 +44,8 @@ class _CategoryDetails extends State<CategoryDetails> {
           backgroundColor: Color(0xff9966FF),
           body: SingleChildScrollView(
             child: Container(
-              //  height: double.infinity,
                 width: MediaQuery.of(context).size.width,
                 margin: EdgeInsets.only(bottom: 10),
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage("assets/images/background.png"),
-                    fit: BoxFit.fill,
-                  ),
-                ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: <Widget>[
@@ -211,7 +204,7 @@ class _CategoryDetails extends State<CategoryDetails> {
                             ],
                           ),
                           SizedBox(height: 20),
-//                          isempty ? myEmptyScreen() :
+                         isempty ? myEmptyScreen() :
                           myFullScreen(),
                           SizedBox(height: 15),
                         ],

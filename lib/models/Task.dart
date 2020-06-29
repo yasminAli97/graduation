@@ -1,8 +1,5 @@
 
 
-
-import 'package:projectflutterapp/models/Category.dart';
-
 class Task {
 
   int _id;
@@ -11,22 +8,21 @@ class Task {
   //List<String> _days;
   String _timeInterval;
   String _notes;
-  bool _taskComplete;
   bool _addAlert = true;
   int _hardness = 1;
   int _categoryId;
   String _image;
+  bool _isCheck =false;
 
   Task();
 
-  Task.withallPar(this._id,this._title, this._time,  this._notes,
-      this._taskComplete, this._addAlert, this._hardness, this._categoryId);
+  Task.withallPar(this._id,this._title, this._time,  this._notes, this._addAlert, this._hardness, this._categoryId, this._isCheck);
 
-  Task.withTitle(this._title);
+  Task.withTitle(this._title, this._isCheck);
 
-  Task.withDefautCat(this._categoryId);
-  Task.withSomePar(this._title, this._time, this._taskComplete,
-      this._categoryId);
+  Task.withDefautCat(this._categoryId, this._isCheck);
+  Task.withSomePar(this._title, this._time,
+      this._categoryId, this._isCheck);
 
 
   int get id => _id;
@@ -59,12 +55,6 @@ class Task {
     _addAlert = value;
   }
 
-  bool get taskComplete => _taskComplete;
-
-  set taskComplete(bool value) {
-    _taskComplete = value;
-  }
-
   String get notes => _notes;
 
   set notes(String value) {
@@ -93,7 +83,11 @@ class Task {
     _title = value;
   }
 
+  bool get isCheck => _isCheck;
 
+  set isCheck(bool value) {
+    _isCheck = value;
+  }
 
   Map<String , dynamic> toMap(){
 
@@ -104,11 +98,12 @@ class Task {
     map["_time"]= this._time;
   //  map["_days"] =this._days;
     map["_notes"] =this._notes;
-    map["_taskComplete"] =this._taskComplete;
+
 
     map["_addAlert"] =this._addAlert == true ? 1:0;
     map["_hardness"] =this._hardness;
     map["_category"] =this._categoryId;
+    map["_isCheck"] =this._isCheck;
 
 
     return map;
@@ -122,10 +117,10 @@ class Task {
     this._time =map["_time"];
    // this._days = map["_days"];
     this._notes= map["_notes"] ;
-    this._taskComplete= map["_taskComplete"] ;
     this._addAlert=  map["_addAlert"]==0? false: true;
     this._hardness= map["_hardness"] ;
     this._categoryId = map["_category"];
+    this._isCheck= map["_isCheck"] ;
 
   }
 

@@ -12,7 +12,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 
 final dbHelper = SQL_Helper();
-Task task = Task.withDefautCat(1);
+Task task = Task.withDefautCat(1, false);
 
 class AddNewTaskScreen extends StatefulWidget {
   AddNewTaskScreen({Key key}) : super(key: key);
