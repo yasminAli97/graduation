@@ -12,7 +12,8 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 
 final dbHelper = SQL_Helper();
-Task task = Task.withDefautCat(1);
+DateTime date = DateTime.now();
+Task task = Task.withDefautCat(1, 0, date.toIso8601String());
 
 class AddNewTaskScreen extends StatefulWidget {
   AddNewTaskScreen({Key key}) : super(key: key);
@@ -424,6 +425,7 @@ class _AddNewTaskScreen extends State<AddNewTaskScreen> {
           GestureDetector(
             onTap: () {
               _selectDate(context);
+              task.time=  DateFormat('EEE,dd MMMM').format(selectedDate);
             },
             child: Container(
               width: 110,
@@ -443,6 +445,7 @@ class _AddNewTaskScreen extends State<AddNewTaskScreen> {
           GestureDetector(
             onTap: () {
               _selectTime(context);
+
             },
             child: Container(
               alignment: AlignmentDirectional.center,

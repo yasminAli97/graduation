@@ -4,16 +4,17 @@ import 'package:flutter/material.dart';
 import 'package:projectflutterapp/models/Task.dart';
 import 'package:projectflutterapp/screens/addTaskScreen.dart';
 
-class scoreShape extends StatefulWidget {
-
-
+class ScoreShape extends StatefulWidget {
+  int score;
+  ScoreShape(this.score);
   @override
-  _scoreShape createState() => _scoreShape();
+  _ScoreShape createState() => _ScoreShape(score);
 }
 
-class _scoreShape extends State<scoreShape> {
+class _ScoreShape extends State<ScoreShape> {
 
-  int score = 60;
+  int score ;
+  _ScoreShape(this.score);
 
   int arrangment = 1;
 
@@ -139,7 +140,7 @@ class _scoreShape extends State<scoreShape> {
                               width: MediaQuery.of(context).size.width / 6,
                               margin: EdgeInsets.only(left: 5, right: 5),
                               child: Text(
-                                "Frinds",
+                                "Friends",
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                     fontFamily: "Segoe UI",

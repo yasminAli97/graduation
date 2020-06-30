@@ -44,11 +44,11 @@ class _EditProfile extends State<EditProfile> {
 
 
 
-
-  void initState() {
-    super.initState();
-    getAndDisplayUserInformation();
-  }
+//
+//  void initState() {
+//    super.initState();
+//    getAndDisplayUserInformation();
+//  }
 
   getAndDisplayUserInformation() async{
     setState(() {

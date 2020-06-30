@@ -225,7 +225,14 @@ class _TaskAttribute extends State<TaskAttribute> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: <Widget>[
-                                SvgPicture.asset("assets/images/edit.svg"),
+                                GestureDetector(
+                                    onTap: () {
+                                      Navigator.push(context,
+                                          MaterialPageRoute(builder: (context) {
+                                            return AddNewTaskScreen();
+                                          }));
+                                    },
+                                    child: SvgPicture.asset("assets/images/edit.svg")),
                                 GestureDetector(
                                     onTap: () {
                                       showDialog(
@@ -378,7 +385,7 @@ class _TaskAttribute extends State<TaskAttribute> {
                         },
                         child: CircleAvatar(
                           backgroundImage:
-                              AssetImage("assets/images/circle_close.png"),
+                          AssetImage("assets/images/circle_close.png"),
                           radius: 28,
                         ),
                       ),

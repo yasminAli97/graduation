@@ -65,3 +65,29 @@ class Category {
 
 
 }
+class Score{
+  int _score = 50;
+
+Score(this._score);
+  int get score => _score;
+
+  set score(int value) {
+    _score = value;
+  }
+
+  Map<String , dynamic> toMap(){
+
+    var map = Map<String , dynamic>();
+
+    map["_score"]= this._score;
+
+    return map;
+
+  }
+
+  Score.fromMap( Map<String , dynamic> map){
+
+    this._score =   map["_score"] ;
+
+  }
+}
