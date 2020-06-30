@@ -10,7 +10,7 @@ import 'package:projectflutterapp/screens/profile/PrfilePage.dart';
 
 class SearchPage extends StatefulWidget {
 
-  //SearchPage({Key key}) : super(key: key);
+  SearchPage({Key key}) : super(key: key);
   @override
   _SearchPageState createState() => _SearchPageState();
 }

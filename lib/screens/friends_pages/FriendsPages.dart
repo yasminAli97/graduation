@@ -11,10 +11,13 @@ import 'package:projectflutterapp/models/User.dart';
 import 'package:projectflutterapp/screens/edit_friends.dart';
 import 'package:projectflutterapp/screens/categoriesScreen.dart';
 import 'package:projectflutterapp/screens/first_page.dart';
-//import 'package:projectflutterapp/screens/friends_pages/ExpPage.dart';
+import 'package:projectflutterapp/screens/friends_pages/Exp.dart';
+import 'package:projectflutterapp/screens/friends_pages/ScoreBoard.dart';
 import 'package:projectflutterapp/screens/home_screen.dart';
+import 'package:projectflutterapp/screens/profile/PrfilePage.dart';
 import 'Friends.dart';
 import 'SearchPage.dart';
+//import 'Requests.dart';
 
 
 class FriendsPages extends StatefulWidget {
@@ -30,8 +33,8 @@ class _FriendsPagesState extends State<FriendsPages> {
 
   int _currentIndex =0;
   final tabs =[
-    Friends(),
-    Container(
+    ScoreBoard(),//Friends(),
+    Notifications(), /*Container(
       child: Column(
         children: <Widget>[
           Container(
@@ -48,8 +51,8 @@ class _FriendsPagesState extends State<FriendsPages> {
           SizedBox(height: 20),
         ],
       ),
-    ),
-    Container(
+    ),*///Notifications(),
+    /*Container(
       child: Column(
         children: <Widget>[
           Container(
@@ -63,7 +66,7 @@ class _FriendsPagesState extends State<FriendsPages> {
               ),
             ),
           ),
-          /*TextField(
+          *//*TextField(
             controller: _searchFriendScoreQuery,
             textAlign: TextAlign.start,
             style: new TextStyle(
@@ -96,7 +99,7 @@ class _FriendsPagesState extends State<FriendsPages> {
                 ),
               ),
             ),
-          ),*/
+          ),*//*
           SizedBox(height: 10),
           Container(
             //width: MediaQuery.of(context).size.width,
@@ -154,7 +157,7 @@ class _FriendsPagesState extends State<FriendsPages> {
           SizedBox(height: 20),
         ],
       ),
-    ),
+    ),*/
     SearchPage()//ExpPage(),// Container(child: Text("search")),//SearchPage(),//search//
   ];
 
@@ -189,7 +192,7 @@ class _FriendsPagesState extends State<FriendsPages> {
             items:[
               Icon(customicon3.RequestsAndFriends.icon_people,color:Colors.black  ,size:20 ,),
               Icon(customicon4.RequestsIcon.icon_requests,color: Colors.black,),
-              Icon(customicon2.AwesomeIcon.icon_awesome_hackerrank,color: Colors.black,),
+              //Icon(customicon2.AwesomeIcon.icon_awesome_hackerrank,color: Colors.black,),
               Icon(Icons.search),
             ],
           ),
@@ -267,33 +270,29 @@ class _FriendsPagesState extends State<FriendsPages> {
                                 ),
                               ),
                               Container(
-                                width: MediaQuery.of(context).size.width * 1.2 / 4,
-                                height: 75,
+                                width: MediaQuery.of(context).size.width * 1.2 / 7,
+                                height: 70,
                                 decoration: new BoxDecoration(
                                   color: Color(0xffBCAAE0).withOpacity(.35),
-                                  shape: BoxShape.rectangle,
+                                  shape: BoxShape.circle/*rectangle,
                                   borderRadius: BorderRadius.only(
                                       bottomRight: Radius.circular(0),
                                       bottomLeft: Radius.circular(50),
                                       topLeft: Radius.circular(0),
-                                      topRight: Radius.circular(0)),
-                                  //                              boxShadow: [
-                                  //                                BoxShadow(
-                                  //                                  color: Color(0xffBBB4C9).withOpacity(.35),
-                                  //                                  blurRadius: 15.0,
-                                  //                                  offset: const Offset(0.0, 10.0),
-                                  //                                ),
-                                  //                              ],
+                                      topRight: Radius.circular(0)),*/
                                 ),
-                                child: GestureDetector(
-                                  onTap: () {
-                                    Navigator.push(context,
-                                        MaterialPageRoute(builder: (context) {
-                                          return EditFriends();
-                                        }));
-                                  },
-                                  child: Icon(customicon5.Edit.mode_edit,color:Colors.white,size: 40,),
-                                ),
+                                //child: GestureDetector(
+                                  //onTap: displayUserProfile(context,userProfileId: currentUser.id),
+                                  child:Padding(
+                                    padding: EdgeInsets.only(right:8.0),
+                                    child:CircleAvatar(
+                                      radius: 2.0,
+                                      backgroundColor: Colors.black,
+                                      backgroundImage: NetworkImage(currentUser.url),
+                                    ) ,
+                                  )
+
+                                //),
                               ),
                             ],
                           ),
@@ -327,5 +326,8 @@ class _FriendsPagesState extends State<FriendsPages> {
         ),
       ),
     );
+  }
+  displayUserProfile(BuildContext context , {String userProfileId}){
+    Navigator.push(context , MaterialPageRoute(builder: (context) => ProfilePage(userProfileId: userProfileId)));
   }
 }

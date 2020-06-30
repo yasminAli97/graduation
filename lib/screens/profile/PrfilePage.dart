@@ -480,7 +480,7 @@ class _ProfilePageState extends State<ProfilePage>{
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: <Widget>[
-                                CustomColumnText(countTotlFollowings.toString(), 'Friends', Colors.purple[800]),
+                                CustomColumnText(countTotalFollowers.toString(), 'Friends', Colors.purple[800]),
                                 CustomColumnText('15', 'Tasks', Colors.purple[800]),
                                 CustomColumnText(user.score.toString(), 'Score', Colors.purple[800]/*Color(0xFF9966FF)*/),
                               ],
@@ -574,7 +574,7 @@ class _ProfilePageState extends State<ProfilePage>{
       //"ownerId": widget.userProfileId,
       "profileName": currentUser.profileName,
       "timestamp": DateTime.now(),
-      "userProfileImg": currentUser.url,
+      "url": currentUser.url,
       "userId": currentOnlineUserId,
       "score": currentUser.score,
     });
@@ -582,7 +582,7 @@ class _ProfilePageState extends State<ProfilePage>{
 
   controlUnFollowUser(){
     setState((){
-      following = true;
+      following = false;
     });
 
     followersReference.document(widget.userProfileId)
