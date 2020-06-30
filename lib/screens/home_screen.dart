@@ -4,19 +4,27 @@ import 'package:projectflutterapp/constants/constants.dart';
 import 'package:projectflutterapp/main.dart';
 import 'package:projectflutterapp/models/Category.dart';
 import 'package:projectflutterapp/models/Task.dart';
+import 'package:projectflutterapp/screens/DoneTasksScreen.dart';
+import 'package:projectflutterapp/screens/MustRegisterScreen.dart';
 import 'package:projectflutterapp/screens/SecondScreen.dart';
 import 'package:projectflutterapp/screens/addTaskScreen.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:projectflutterapp/screens/categoriesScreen.dart';
-import 'package:projectflutterapp/screens/friends.dart';
+import 'package:projectflutterapp/screens/friends_pages/Friends.dart';
+
+//import 'package:projectflutterapp/screens/friends.dart';
 import 'package:projectflutterapp/screens/task_attribute.dart';
 import 'package:projectflutterapp/utility/notifications.dart';
 import 'package:projectflutterapp/utility/scoreWidget.dart';
 import 'package:projectflutterapp/screens/first_page.dart';
-import 'package:projectflutterapp/screens/ProfilePage.dart';
+
+//import 'package:projectflutterapp/screens/ProfilePage.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:projectflutterapp/screens/profile/PrfilePage.dart';
 import 'friends_pages/FriendsPages.dart';
+import 'package:rating_bar/rating_bar.dart';
+import 'package:share/share.dart';
 
 final FirstPage firstPage = FirstPage();
 
@@ -35,11 +43,14 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreen extends State<HomeScreen> {
+  double _ratingStar = 0;
   bool isMore = false;
 
   Notifications n = Notifications();
   int scory;
 
+  String text = 'https://www.youtube.com';
+  String subject = 'Done App';
   //final AuthServices _auth = AuthServices();
 
   @override
@@ -129,8 +140,7 @@ class _HomeScreen extends State<HomeScreen> {
             ),
             child: Container(
                 alignment: AlignmentDirectional.topStart,
-                child: Column(
-                    children: <Widget>[
+                child: Column(children: <Widget>[
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
@@ -164,12 +174,14 @@ class _HomeScreen extends State<HomeScreen> {
                                 ],
                               ),
                               child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
                                 children: <Widget>[
                                   Container(
                                     child: SvgPicture.asset(
                                       "assets/images/champion.svg",
-                                     width: 45, height: 45,
+                                      width: 45,
+                                      height: 45,
                                     ),
                                   ),
                                   Column(
@@ -324,6 +336,7 @@ class _HomeScreen extends State<HomeScreen> {
                                 GestureDetector(
                                   onTap: () {
                                     Navigator.push(context,
+                                        //MustRegisterScreen
                                         MaterialPageRoute(builder: (context) {
                                       return Friends();
                                     }));
@@ -336,6 +349,14 @@ class _HomeScreen extends State<HomeScreen> {
                                           "assets/images/ic_friends.svg")),
                                 ),
                                 GestureDetector(
+                                  onTap: (){
+                                    final RenderBox box = context.findRenderObject();
+                                    Share.share(text,
+                                        subject: subject,
+                                        sharePositionOrigin:
+                                        box.localToGlobal(Offset.zero) &
+                                        box.size);
+                                  },
                                   child: Container(
                                     width: MediaQuery.of(context).size.width *
                                         1.2 /
@@ -386,11 +407,13 @@ class _HomeScreen extends State<HomeScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               GestureDetector(
-                /*onTap: () {
-                    Navigator.push(context,MaterialPageRoute(builder: (context) {
-                    return FriendsPages();
-                    }));
-                    },*/
+                onTap: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    if (currentUser == null) return MustRegisterScreen();
+                    return ProfilePage(userProfileId: currentUser.id);
+                    // return MyWidget();
+                  }));
+                },
                 child: Container(
                     width: MediaQuery.of(context).size.width * 1.2 / 5.3,
                     child: SvgPicture.asset(
@@ -399,7 +422,9 @@ class _HomeScreen extends State<HomeScreen> {
               GestureDetector(
                 onTap: () {
                   Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return MyWidget();
+                    return DoneTasksScreen();
+
+                    // return MyWidget();
                   }));
                 },
                 child: Container(
@@ -408,26 +433,23 @@ class _HomeScreen extends State<HomeScreen> {
                         "assets/images/Complitedtasks.svg")), //ic_friends.svg///rating.svg**
               ),
               GestureDetector(
-                onTap: () {
-                  n.showNotification();
+                onTap: (){
+                  showDialog(
+                      context: context, builder: (_) => showAlert(task));
                 },
                 child: Container(
                   width: MediaQuery.of(context).size.width * 1.2 / 5,
                   child: SvgPicture.asset("assets/images/rating.svg"),
-
-                  ///rating.svg**
                 ),
               ),
               GestureDetector(
                 onTap: () {
-                  setState(() {
-                    isMore = !isMore;
-                  });
+                  n.showNotification();
                 },
                 child: Container(
                   width: MediaQuery.of(context).size.width * 1.2 / 5.5,
                   child:
-                      SvgPicture.asset("assets/images/about.svg"), //about.svg
+                  SvgPicture.asset("assets/images/about.svg"), //about.svg
                 ),
               ),
             ]));
@@ -453,8 +475,10 @@ class _HomeScreen extends State<HomeScreen> {
     Score score = new Score(50);
     int i = await dbHelper.queryScoresCount();
     print("$i score");
-    if (i == 0) addScoree(score);
-    else w();
+    if (i == 0)
+      addScoree(score);
+    else
+      w();
   }
 
   void addScoree(Score score) async {
@@ -478,4 +502,51 @@ class _HomeScreen extends State<HomeScreen> {
 
     print("$scory Anaaaa");
   }
+
+  Widget showAlert(Task task) {
+    Widget cancelButton = FlatButton(
+      child: Text("Cancel", style: TextStyle(
+        fontFamily: "Segoe UI",
+        fontSize: 20,
+        color: Colors.purple,
+      )),
+      onPressed:  () {
+        Navigator.pop(context);
+      },
+    );
+    Widget continueButton = FlatButton(
+      child: Text("Done", style: TextStyle(
+        fontFamily: "Segoe UI",
+        fontSize: 20,
+        color: Colors.purple,
+      )),
+      onPressed:  () {
+        Navigator.pop(context);
+      },
+    );
+    return AlertDialog(
+      title: Text("Rate App", style: TextStyle(
+        fontFamily: "Segoe UI",
+        fontSize: 25,
+        color: Colors.purple,
+        fontWeight: FontWeight.bold,
+      )),
+      elevation: 5,
+      actions: [
+        cancelButton,
+        continueButton,
+      ],
+      content: Container(
+        height: 100,
+        child: RatingBar(
+          onRatingChanged: (rating) => setState(() => _ratingStar = rating),
+          filledIcon: Icons.star,
+          filledColor: Colors.amber,
+          emptyIcon: Icons.star_border,
+        ),
+      ),
+    );
+  }
+
+
 }

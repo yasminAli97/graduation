@@ -62,7 +62,7 @@ class SQL_Helper{
   Future<Database> initializedDatabase() async{
     Directory directory = await getApplicationDocumentsDirectory();
     String path = directory.path + "project.db";
-    var projectDB= await openDatabase(path , version: 2 , onCreate: createDatabase);
+    var projectDB= await openDatabase(path , version: 3, onCreate: createDatabase);
 
     return projectDB;
   }
@@ -175,7 +175,7 @@ class SQL_Helper{
   Future<int> insertTask(Task row) async {
     Database db = await this.database;
     var result= await db.insert(tasksTable, row.toMap());
-    return  result;
+    return result;
   }
 
 
@@ -210,14 +210,15 @@ class SQL_Helper{
   Future<List<Task>> showDoneTasks() async {
 
     final Database db = await this.database;
-    final List<Map<String, dynamic>> maps = await db.query(tasksTable,where: '$_isCheck = 1');
-    return maps.map((c)=>  Task.fromMap(c)).toList();
+    final List<Map<String, dynamic>> maps = await db.rawQuery('SELECT * from $tasksTable  WHERE $_isCheck = 1' );
+    return  maps.map((c) => Task.fromMap(c)).toList();
 
   }
 
   Future<List<Task>>  tasksOfCategory(int catId) async {
     final Database db = await this.database;
-    final List<Map<String, dynamic>> maps = await db.query(tasksTable,where: '$_taskCategory = ?', whereArgs: [catId]);
+  //  final List<Map<String, dynamic>> maps = await db.query(tasksTable,where: '$_taskCategory AND $_isCheck  = ?' , whereArgs: [catId, 1]);
+    final List<Map<String, dynamic>> maps = await db.rawQuery('SELECT * from $tasksTable  WHERE $_taskCategory = $catId AND $_isCheck = 0' );
     return  maps.map((c) => Task.fromMap(c)).toList();
 
 
@@ -228,7 +229,7 @@ class SQL_Helper{
   }
   Future<int> queryTasksCountCatId(int catId) async {
     Database db = await this.database;
-    return Sqflite.firstIntValue(await db.rawQuery('SELECT COUNT(*) FROM $tasksTable where $_taskCategory = $catId'));
+    return Sqflite.firstIntValue(await db.rawQuery('SELECT COUNT(*) FROM $tasksTable where $_taskCategory = $catId AND $_taskCategory = $catId AND $_isCheck = 0'));
   }
 
 

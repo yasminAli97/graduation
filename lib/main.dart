@@ -5,6 +5,7 @@ import 'package:projectflutterapp/screens/addTaskScreen.dart';
 import 'package:projectflutterapp/screens/categoriesScreen.dart';
 import 'package:projectflutterapp/screens/categoryDetailsScreen.dart';
 import 'package:projectflutterapp/screens/home_screen.dart';
+import 'package:projectflutterapp/screens/splash.dart';
 import 'package:projectflutterapp/screens/task_attribute.dart';
 import 'package:projectflutterapp/screens/friends.dart';
 import 'package:projectflutterapp/screens/wrapper.dart';
@@ -82,7 +83,7 @@ class MyApp extends StatelessWidget {
           cardColor: Colors.white70,
           accentColor: Colors.purple,
         ),
-        home: FirstPage(),
+        home: AnimatedSplashScreen(),
         //MyWidget(),
         routes: <String, WidgetBuilder>{
           HOME_SCREEN: (BuildContext context) => HomeScreen(),

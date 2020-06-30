@@ -4,7 +4,7 @@ class Task {
 
   int _id;
   String _title;
-  DateTime _time;
+  String _time;
   //List<String> _days;
   String _timeInterval;
   String _notes;
@@ -12,15 +12,15 @@ class Task {
   int _hardness = 1;
   int _categoryId;
   String _image;
-  bool _isCheck =false;
+  int _isCheck =0;
 
   Task();
 
   Task.withallPar(this._id,this._title, this._time,  this._notes, this._addAlert, this._hardness, this._categoryId, this._isCheck);
 
-  Task.withTitle(this._title, this._isCheck);
+  Task.withTitle(this._title, this._isCheck,this._time);
 
-  Task.withDefautCat(this._categoryId, this._isCheck);
+  Task.withDefautCat(this._categoryId, this._isCheck,this._time);
   Task.withSomePar(this._title, this._time,
       this._categoryId, this._isCheck);
 
@@ -71,9 +71,9 @@ class Task {
 //    _days = value;
 //  }
 
-  DateTime get time => _time;
+  String get time => _time;
 
-  set time(DateTime value) {
+  set time(String value) {
     _time = value;
   }
 
@@ -83,9 +83,9 @@ class Task {
     _title = value;
   }
 
-  bool get isCheck => _isCheck;
+  int get isCheck => _isCheck;
 
-  set isCheck(bool value) {
+  set isCheck(int value) {
     _isCheck = value;
   }
 

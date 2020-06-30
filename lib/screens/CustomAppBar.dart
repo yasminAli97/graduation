@@ -33,13 +33,15 @@ class CustomContainer extends StatelessWidget {
 }
 
 class CustomAppBar extends StatelessWidget {
-  CustomAppBar(this.rightAsset, this.title, this.leftAsset, this.customRoute);
+  CustomAppBar(this.rightAsset,this.rightFunction, this.title, this.leftAsset,this.leftFunction /*this.customRoute*/);
 
-  String rightAsset;
+  IconData rightAsset;//String rightAsset;
+  Function rightFunction;
   String title;
   String leftAsset;
+  Function leftFunction;
 
-  Route<Object> customRoute;
+  //Route<Object> customRoute;
 
   @override
   Widget build(BuildContext context) {
@@ -48,9 +50,10 @@ class CustomAppBar extends StatelessWidget {
         Expanded(
           flex: 2,
           child: GestureDetector(
-              onTap: () {
+              onTap:leftFunction(),
+              /*() {
                 Navigator.of(context).pop();
-              },
+              },*/
               child: Stack(
                 alignment: Alignment.center,
                 children: <Widget>[
@@ -79,17 +82,24 @@ class CustomAppBar extends StatelessWidget {
         Expanded(
             flex: 2,
             child: GestureDetector(
-                onTap: () {
+                onTap: rightFunction(),/*() {
                   Navigator.push(context, customRoute);
-                },
+                },*/
                 child: Stack(
                   alignment: Alignment.center,
                   children: <Widget>[
                     CustomContainer(50, 0),
-                    SvgPicture.asset(
+                    /*SvgPicture.asset(
                       rightAsset,
                       color: Colors.white,
                       height: 35,
+                    ),*/
+                    IconButton(
+                      icon: Icon(
+                        rightAsset,
+                        color: Colors.white,
+                        size: 30.0,
+                      ),
                     ),
                   ],
                 )))

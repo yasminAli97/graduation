@@ -9,7 +9,7 @@ import 'package:projectflutterapp/utility/sql_helper.dart';
 
 class CategoryDetails extends StatefulWidget {
   Category category;
-  bool isempty ;
+  bool isempty;
 
   CategoryDetails(this.category, this.isempty);
 
@@ -19,7 +19,7 @@ class CategoryDetails extends StatefulWidget {
 
 class _CategoryDetails extends State<CategoryDetails> {
   Category category;
-  bool isempty ;
+  bool isempty;
 
   TextEditingController _searchQuery = TextEditingController();
 
@@ -41,7 +41,7 @@ class _CategoryDetails extends State<CategoryDetails> {
     return SafeArea(
       child: Scaffold(
           key: scaffoldKey,
-          backgroundColor: Color(0xff9966FF),
+          backgroundColor: Color(0xffB69EE6),
           body: SingleChildScrollView(
             child: Container(
                 width: MediaQuery.of(context).size.width,
@@ -160,7 +160,7 @@ class _CategoryDetails extends State<CategoryDetails> {
                                     MediaQuery.of(context).size.width * 1.4 / 4,
                                 height: 75,
                                 decoration: new BoxDecoration(
-                                  color: Color(0xffBCAAE0).withOpacity(.35),
+                                  color: Color(0xffA57DF4).withOpacity(.35),
                                   shape: BoxShape.rectangle,
                                   borderRadius: BorderRadius.only(
                                       bottomRight: Radius.circular(0),
@@ -181,7 +181,7 @@ class _CategoryDetails extends State<CategoryDetails> {
                                         4,
                                     height: 80,
                                     decoration: new BoxDecoration(
-                                      color: Color(0xffBCAAE0).withOpacity(.35),
+                                      color: Color(0xffAB85F6).withOpacity(.35),
                                       shape: BoxShape.rectangle,
                                       borderRadius: BorderRadius.only(
                                           bottomRight: Radius.circular(0),
@@ -204,8 +204,7 @@ class _CategoryDetails extends State<CategoryDetails> {
                             ],
                           ),
                           SizedBox(height: 20),
-                         isempty ? myEmptyScreen() :
-                          myFullScreen(),
+                          isempty ? myEmptyScreen() : myFullScreen(),
                           SizedBox(height: 15),
                         ],
                       ),
@@ -232,49 +231,217 @@ class _CategoryDetails extends State<CategoryDetails> {
                 scrollDirection: Axis.vertical,
                 shrinkWrap: true,
                 itemBuilder: (context, index) {
-                  return GestureDetector(
-                    onTap: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) {
-                        return TaskAttribute(asyncSnapshot.data[index]);
-                      }));
-                    },
-                    child: Container(
-                      color: Colors.black12,
-                        width: MediaQuery.of(context).size.width/3,
-                        height: MediaQuery.of(context).size.width/3,
-                        alignment: AlignmentDirectional.topStart,
-                        margin: EdgeInsets.only(left: 20, right: 20),
-                        child: Column(
-                          children: <Widget>[
-                            Container(
-                                alignment: AlignmentDirectional.topStart,
-                                child: SvgPicture.asset(
-                                    "assets/images/ic_task.svg", height: 50, width: 50,)),
-                            SizedBox(height: 10),
-                            Row(
-                              children: <Widget>[
-                                Text(
-                                  asyncSnapshot.data[index].title,
-                                  style: TextStyle(
-                                      fontFamily: "Segoe UI",
-                                      fontSize: 30,
-                                      color: Colors.white),
-                                ),
-                                SizedBox(width: 10),
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: SvgPicture.asset(
-                                      "assets/images/ic_check.svg"),
-                                )
-                              ],
-                            ),
-                          ],
-                        )),
-                  );
+                  return taskContainer(asyncSnapshot.data[index]);
                 });
           }
         });
+  }
+
+  Widget taskContainer(Task task) {
+    return GestureDetector(
+      onLongPress: () {
+        Navigator.push(context, MaterialPageRoute(builder: (context) {
+          return TaskAttribute(task);
+        }));
+      },
+      child: Container(
+        width: MediaQuery.of(context).size.width / 3,
+        height: MediaQuery.of(context).size.width / 3,
+        alignment: AlignmentDirectional.topStart,
+        margin: EdgeInsets.only(left: 10, right: 10, top: 20),
+        padding: EdgeInsets.only(left: 20, right: 5, top: 20),
+        decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.all(
+              Radius.circular(15),
+            ),
+            border: Border.all(color: Color(0xff50299F))),
+        child: Column(
+          children: <Widget>[
+            Container(
+                alignment: AlignmentDirectional.topStart,
+                child: SvgPicture.asset(
+                  "assets/images/ic_task.svg",
+                  height: 30,
+                  width: 50,
+                )),
+            SizedBox(height: 10),
+            Row(
+              children: <Widget>[
+                Text(
+                  task.title,
+                  style: TextStyle(
+                      fontFamily: "Segoe UI",
+                      fontSize: 20,
+                      color: Colors.black),
+                ),
+                SizedBox(width: 10),
+                InkWell(
+                  onTap: () {
+                    showDialog(
+                        context: context, builder: (_) => showAlert(task));
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: SvgPicture.asset(
+                      "assets/images/ic_check.svg",
+                      color: Colors.black,
+                    ),
+                  ),
+                )
+              ],
+            ),
+            Text(
+              task.time,
+              style: TextStyle(
+                  fontFamily: "Segoe UI", fontSize: 10, color: Colors.black),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget showAlert(Task task) {
+    return Material(
+      color: Colors.transparent,
+      child: Center(
+        child: Stack(
+          alignment: AlignmentDirectional.topStart,
+          children: <Widget>[
+            Container(
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height * 2.1 / 5,
+              padding: EdgeInsets.only(
+                top: 10,
+                bottom: 10,
+                left: 15,
+                right: 15,
+              ),
+              margin: EdgeInsets.only(left: 25, right: 25, top: 20),
+              decoration: new BoxDecoration(
+                color: Colors.white,
+                shape: BoxShape.rectangle,
+                borderRadius: BorderRadius.circular(30),
+                boxShadow: [
+                  BoxShadow(
+                    color: Color(0xff7DE82B),
+                    blurRadius: 15.0,
+                    offset: const Offset(0.0, 10.0),
+                  ),
+                ],
+              ),
+              child: Column(
+                children: <Widget>[
+                  Container(
+                    margin: EdgeInsets.only(
+                        top: MediaQuery.of(context).size.height * 2.6 / 15),
+                    alignment: AlignmentDirectional.center,
+                    child: Text("Have you completed your task already?",
+                        textAlign: TextAlign.start,
+                        style: (TextStyle(
+                            fontFamily: "Segoe UI",
+                            color: Color(0xFF666666),
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold))),
+                  ),
+                  SizedBox(height: 30),
+                  Container(
+                    alignment: AlignmentDirectional.bottomCenter,
+                    child: FlatButton(
+                      onPressed: () {
+                        setState(() {
+                          task.isCheck = 1;
+                          updateTaskCheck(task);
+                        });
+                        // To close the dialog
+                      },
+                      child: Text("Yes",
+                          textAlign: TextAlign.center,
+                          style: (TextStyle(
+                              fontFamily: "Segoe UI",
+                              color: Color(0xFFE24C4B),
+                              fontSize: 25,
+                              fontWeight: FontWeight.bold))),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Stack(
+              alignment: AlignmentDirectional.topEnd,
+              children: <Widget>[
+                Container(
+                  width: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.height * 2.4 / 15,
+                  margin: EdgeInsets.only(left: 25, right: 25, top: 20),
+                  alignment: AlignmentDirectional.topStart,
+                  decoration: new BoxDecoration(
+                      color: Color(0xff7DE82B),
+                      shape: BoxShape.rectangle,
+                      borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(30),
+                          topRight: Radius.circular(30))),
+                  child: Stack(
+                    alignment: AlignmentDirectional.bottomStart,
+                    children: <Widget>[
+                      Container(
+                          margin: EdgeInsets.only(left: 20, bottom: 25),
+                          width: 55,
+                          height: 10,
+                          decoration: BoxDecoration(boxShadow: [
+                            BoxShadow(
+                                color: Color(0xffF2ECD5),
+                                offset: Offset(2, 2),
+                                blurRadius: 17,
+                                spreadRadius: 10)
+                          ])),
+                      Container(
+                        margin: EdgeInsets.only(left: 15, bottom: 20),
+                        alignment: AlignmentDirectional.bottomStart,
+                        child: Text(
+                          "Confirm",
+                          textAlign: TextAlign.start,
+                          style: (TextStyle(
+                              fontFamily: "Segoe UI",
+                              color: Colors.white,
+                              fontSize: 25,
+                              fontWeight: FontWeight.bold)),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Positioned(
+                  right: 22,
+                  child: Stack(
+                    alignment: AlignmentDirectional.center,
+                    children: <Widget>[
+                      CircleAvatar(
+                        backgroundColor: Color(0xff7DE82B),
+                        radius: 35,
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            Navigator.of(context).pop();
+                          });
+                        },
+                        child: CircleAvatar(
+                          backgroundImage:
+                              AssetImage("assets/images/circle_close.png"),
+                          radius: 28,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
   Widget myEmptyScreen() {
@@ -373,5 +540,31 @@ class _CategoryDetails extends State<CategoryDetails> {
 //            )),
       ],
     );
+  }
+
+  void updateTaskCheck(Task task) async {
+    int result = await dbHelper.updateTask(task);
+    List<Score> ss;
+    Score newScore;
+    int result2;
+    ss = await dbHelper.showScore();
+
+    if (result == 0) {
+      print("task not edit");
+    } else {
+      print(" edit");
+      Navigator.of(context).pop();
+
+      setState(() {
+        tasks = dbHelper.tasksOfCategory(category.id);
+        newScore = Score(ss.first.score+5);
+      });
+      result2= await dbHelper.updateScore(newScore);
+
+      if (result2 == 0)
+        print("score not edit");
+      else
+        print("score edit");
+    }
   }
 }
